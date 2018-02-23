@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class CreateEventViewController: UIViewController {
     
@@ -18,8 +19,10 @@ class CreateEventViewController: UIViewController {
     let imagePicker = UIImagePickerController()
     var datePicker: UIDatePicker!
     var createButton: UIButton!
+    var tap: UITapGestureRecognizer!
     
-    var user: String!
+    var uid: String!
+    var user: User!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +31,24 @@ class CreateEventViewController: UIViewController {
         setupButtons()
         setupImageView()
         setupDatePicker()
+        
         imagePicker.delegate = self
+        if let currUser = Auth.auth().currentUser {
+            self.uid = currUser.uid
+            User.getCurrentUser(withId: uid, block: { (user) in
+                self.user = user
+            })
+        }
+    }
+    
+    func addGestureRecognizer() {
+        tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+        view.removeGestureRecognizer(tap)
     }
     
     @objc func cancelButtonTapped() {
@@ -38,15 +58,17 @@ class CreateEventViewController: UIViewController {
     @objc func createButtonTapped() {
         let name = nameTextView.text ?? ""
         let description = descriptionTextView.text ?? ""
-        let image = eventImageView.image ?? UIImage()
-        let date = datePicker.date
+        let imageData = UIImageJPEGRepresentation(eventImageView.image!, 0.5)
+        let date = Utils.createDateString(date: datePicker.date)
+        let time = Utils.createTimeString(date: datePicker.date)
         
         if name != "" && description != "" {
-            FirebaseAPIClient.createNewPost(name: name, description: description, date: date, image: image, host: user)
+            print("creating new post")
+            let dateTime = "\(date)\n\(time)"
+            FirebaseAPIClient.createNewPost(name: name, description: description, date: dateTime, imageData: imageData!, host: user.name!, hostId: uid)
+            print("new post created")
             dismiss(animated: true, completion: nil)
         }
-        
-        // do something if any textfields are incomplete
     }
     
     @objc func chooseImage(sender: UIButton!) {
@@ -66,6 +88,8 @@ class CreateEventViewController: UIViewController {
         nameTextView.font = UIFont.systemFont(ofSize: 18)
         nameTextView.isScrollEnabled = false
         nameTextView.delegate = self
+        nameTextView.autocorrectionType = .no
+        nameTextView.autocapitalizationType = .words
         view.addSubview(nameTextView)
         
         let line = UIView(frame: CGRect(x: 10, y: nameTextView.frame.maxY, width: view.frame.width - 20, height: 1))
@@ -78,6 +102,8 @@ class CreateEventViewController: UIViewController {
         descriptionTextView.textColor = .lightGray
         descriptionTextView.font = UIFont.systemFont(ofSize: 18)
         descriptionTextView.delegate = self
+        descriptionTextView.autocorrectionType = .yes
+        descriptionTextView.autocapitalizationType = .sentences
         view.addSubview(descriptionTextView)
     }
     
@@ -98,7 +124,7 @@ class CreateEventViewController: UIViewController {
     
     func setupImageView() {
         eventImageView = UIImageView(frame: CGRect(x: 10, y: descriptionTextView.frame.maxY + 10, width: view.frame.width - 20, height: 200))
-        chooseImageButton = UIButton(frame: eventImageView.frame)
+        chooseImageButton = UIButton(frame: CGRect(x: view.frame.width/2 - 200, y: eventImageView.frame.maxY - eventImageView.frame.height/2 - 20, width: 400, height: 40))
         chooseImageButton.setTitle("Choose event image", for: .normal)
         chooseImageButton.setTitleColor(UIColor(red: 90/255, green: 200/255, blue: 250/255, alpha: 1.0), for: .normal)
         chooseImageButton.addTarget(self, action: #selector(chooseImage), for: .touchUpInside)
@@ -135,6 +161,7 @@ extension CreateEventViewController: UITextViewDelegate {
             textView.text = nil
             textView.textColor = .black
         }
+        addGestureRecognizer()
     }
     
     public func textViewDidEndEditing(_ textView: UITextView) {

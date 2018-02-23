@@ -15,14 +15,15 @@ class LoginViewController: UIViewController {
     var passwordTextField: UITextField!
     var loginButton: UIButton!
     var signupButton: UIButton!
+    var imageView: UIImageView!
+    var tap: UITapGestureRecognizer!
     
     let indent: CGFloat = 40
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationController?.isNavigationBarHidden = true
-        
+        setupImageView()
         setupTextFields()
         setupButtons()
         
@@ -31,34 +32,62 @@ class LoginViewController: UIViewController {
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        navigationController?.isNavigationBarHidden = true
+    }
+    
     @objc func loginButtonTapped() {
         let email = emailTextField.text ?? ""
         let password = passwordTextField.text ?? ""
         
         if email != "" && password != "" {
             UserAuthHelper.logIn(email: email, password: password, withBlock: { () in
+                self.passwordTextField.text = ""
+                self.dismissKeyboard()
                 self.performSegue(withIdentifier: "toFeed", sender: self)
             })
         }
-        
-        // do something if any textfields are empty
     }
     
     @objc func signupButtonTapped() {
         performSegue(withIdentifier: "toSignUp", sender: self)
     }
+    
+    @objc func addGestureRecognizer() {
+        tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+        view.removeGestureRecognizer(tap)
+    }
 
     // MARK: Creation functions
     
+    func setupImageView() {
+        imageView = UIImageView(frame: CGRect(x: 0, y: 50, width: view.frame.width, height: 200))
+        imageView.image = UIImage(named: "mdb_nooutline")
+        imageView.contentMode = .scaleAspectFit
+        view.addSubview(imageView)
+    }
+    
     func setupTextFields() {
-        emailTextField = UITextField(frame: CGRect(x: indent, y: 200, width: view.frame.width - 2 * indent, height: 50))
-        emailTextField.placeholder = "Username"
+        emailTextField = UITextField(frame: CGRect(x: indent, y: imageView.frame.maxY + 70, width: view.frame.width - 2 * indent, height: 50))
+        emailTextField.placeholder = "Email"
         emailTextField.borderStyle = .roundedRect
+        emailTextField.autocapitalizationType = .none
+        emailTextField.autocorrectionType = .no
+        emailTextField.addTarget(self, action: #selector(addGestureRecognizer), for: .touchDown)
         view.addSubview(emailTextField)
         
         passwordTextField = UITextField(frame: CGRect(x: indent, y: emailTextField.frame.maxY + 10, width: view.frame.width - 2 * indent, height: 50))
         passwordTextField.placeholder = "Password"
         passwordTextField.borderStyle = .roundedRect
+        passwordTextField.autocorrectionType = .no
+        passwordTextField.autocapitalizationType = .none
+        passwordTextField.isSecureTextEntry = true
+        passwordTextField.addTarget(self, action: #selector(addGestureRecognizer), for: .touchDown)
         view.addSubview(passwordTextField)
     }
     

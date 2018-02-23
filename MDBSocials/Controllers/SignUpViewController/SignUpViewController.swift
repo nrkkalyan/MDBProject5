@@ -16,6 +16,7 @@ class SignUpViewController: UIViewController {
     var passwordTextField: UITextField!
     var signupButton: UIButton!
     var backToLoginButton: UIButton!
+    var tap: UITapGestureRecognizer!
     
     let indent: CGFloat = 40
     
@@ -26,6 +27,10 @@ class SignUpViewController: UIViewController {
         setupButtons()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        navigationController?.isNavigationBarHidden = true
+    }
+    
     @objc func signupButtonTapped() {
         let name = nameTextField.text ?? ""
         let email = emailTextField.text ?? ""
@@ -34,8 +39,8 @@ class SignUpViewController: UIViewController {
         print("tapped")
         if name != "" && email != "" && username != "" && password != "" {
             print("passed")
-            UserAuthHelper.createUser(email: email, password: password, withBlock: { () in
-                FirebaseAPIClient.createNewUser(name: name, username: username, email: email)
+            UserAuthHelper.createUser(email: email, password: password, withBlock: { (uid) in
+                FirebaseAPIClient.createNewUser(uid: uid, name: name, username: username, email: email)
                 self.nameTextField.text = ""
                 self.emailTextField.text = ""
                 self.usernameTextField.text = ""
@@ -43,12 +48,20 @@ class SignUpViewController: UIViewController {
                 self.performSegue(withIdentifier: "toFeed", sender: self)
             })
         }
-        
-        // do something if any textfields are incomplete
     }
     
     @objc func loginButtonTapped() {
         navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func addGestureRecognizer() {
+        tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+        view.removeGestureRecognizer(tap)
     }
     
     // MARK: Creation functions
@@ -57,21 +70,34 @@ class SignUpViewController: UIViewController {
         nameTextField = UITextField(frame: CGRect(x: indent, y: 100, width: view.frame.width - 2 * indent, height: 50))
         nameTextField.placeholder = "Full Name"
         nameTextField.borderStyle = .roundedRect
+        nameTextField.autocorrectionType = .no
+        nameTextField.autocapitalizationType = .words
+        nameTextField.addTarget(self, action: #selector(addGestureRecognizer), for: .touchDown)
         view.addSubview(nameTextField)
         
         emailTextField = UITextField(frame: CGRect(x: indent, y: nameTextField.frame.maxY + 10, width: view.frame.width - 2 * indent, height: 50))
         emailTextField.placeholder = "Email"
         emailTextField.borderStyle = .roundedRect
+        emailTextField.autocorrectionType = .no
+        emailTextField.autocapitalizationType = .none
+        emailTextField.addTarget(self, action: #selector(addGestureRecognizer), for: .touchDown)
         view.addSubview(emailTextField)
         
         usernameTextField = UITextField(frame: CGRect(x: indent, y: emailTextField.frame.maxY + 10, width: view.frame.width - 2 * indent, height: 50))
         usernameTextField.placeholder = "Username"
         usernameTextField.borderStyle = .roundedRect
+        usernameTextField.autocorrectionType = .no
+        usernameTextField.autocapitalizationType = .none
+        usernameTextField.addTarget(self, action: #selector(addGestureRecognizer), for: .touchDown)
         view.addSubview(usernameTextField)
         
         passwordTextField = UITextField(frame: CGRect(x: indent, y: usernameTextField.frame.maxY + 10, width: view.frame.width - 2 * indent, height: 50))
         passwordTextField.placeholder = "Password"
         passwordTextField.borderStyle = .roundedRect
+        passwordTextField.autocapitalizationType = .none
+        passwordTextField.autocorrectionType = .no
+        passwordTextField.isSecureTextEntry = true
+        passwordTextField.addTarget(self, action: #selector(addGestureRecognizer), for: .touchDown)
         view.addSubview(passwordTextField)
     }
     

@@ -35,11 +35,11 @@ class UserAuthHelper {
         }
     }
     
-    static func createUser(email: String, password: String, withBlock: @escaping () -> ()) {
+    static func createUser(email: String, password: String, withBlock: @escaping (String) -> ()) {
         Auth.auth().createUser(withEmail: email, password: password, completion: { (user, error) in
             if error == nil {
                 print("no error?")
-                withBlock()
+                withBlock((user?.uid)!)
             } else {
                 print("Error creating user: %@", error.debugDescription)
             }

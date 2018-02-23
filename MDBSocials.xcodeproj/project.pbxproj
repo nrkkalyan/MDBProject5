@@ -12,11 +12,12 @@
 		192F33B2203BF90600528CE3 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192F33B1203BF90600528CE3 /* FeedViewController.swift */; };
 		192F33B7203BF94700528CE3 /* CreateEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192F33B6203BF94700528CE3 /* CreateEventViewController.swift */; };
 		192F33B9203BF95000528CE3 /* EventDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192F33B8203BF95000528CE3 /* EventDetailViewController.swift */; };
-		192F33BB203C1EB900528CE3 /* CreateEventModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192F33BA203C1EB900528CE3 /* CreateEventModalView.swift */; };
 		192F33BE203C3D8900528CE3 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192F33BD203C3D8900528CE3 /* PostTableViewCell.swift */; };
 		19459F0A203D666E00F5A8AD /* FirebaseAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19459F09203D666E00F5A8AD /* FirebaseAPIClient.swift */; };
 		19459F0C203D6C1500F5A8AD /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19459F0B203D6C1500F5A8AD /* User.swift */; };
 		19459F0E203D740000F5A8AD /* UserAuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19459F0D203D740000F5A8AD /* UserAuthHelper.swift */; };
+		199D4F35203EC94400FD0C68 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 199D4F34203EC94400FD0C68 /* Utils.swift */; };
+		199D4F37203ED19300FD0C68 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 199D4F36203ED19300FD0C68 /* Post.swift */; };
 		19AE385D203BD8DF007E4DE0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19AE385C203BD8DF007E4DE0 /* AppDelegate.swift */; };
 		19AE385F203BD8DF007E4DE0 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19AE385E203BD8DF007E4DE0 /* LoginViewController.swift */; };
 		19AE3862203BD8DF007E4DE0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 19AE3860203BD8DF007E4DE0 /* Main.storyboard */; };
@@ -50,11 +51,12 @@
 		192F33B1203BF90600528CE3 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		192F33B6203BF94700528CE3 /* CreateEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEventViewController.swift; sourceTree = "<group>"; };
 		192F33B8203BF95000528CE3 /* EventDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailViewController.swift; sourceTree = "<group>"; };
-		192F33BA203C1EB900528CE3 /* CreateEventModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEventModalView.swift; sourceTree = "<group>"; };
 		192F33BD203C3D8900528CE3 /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
 		19459F09203D666E00F5A8AD /* FirebaseAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAPIClient.swift; sourceTree = "<group>"; };
 		19459F0B203D6C1500F5A8AD /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		19459F0D203D740000F5A8AD /* UserAuthHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAuthHelper.swift; sourceTree = "<group>"; };
+		199D4F34203EC94400FD0C68 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		199D4F36203ED19300FD0C68 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		19AE3859203BD8DF007E4DE0 /* MDBSocials.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MDBSocials.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		19AE385C203BD8DF007E4DE0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		19AE385E203BD8DF007E4DE0 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -103,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				19459F0D203D740000F5A8AD /* UserAuthHelper.swift */,
+				199D4F34203EC94400FD0C68 /* Utils.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -110,7 +113,6 @@
 		192F33A7203BF83C00528CE3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				192F33BA203C1EB900528CE3 /* CreateEventModalView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -139,6 +141,7 @@
 			isa = PBXGroup;
 			children = (
 				19459F0B203D6C1500F5A8AD /* User.swift */,
+				199D4F36203ED19300FD0C68 /* Post.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -472,13 +475,14 @@
 				19459F0E203D740000F5A8AD /* UserAuthHelper.swift in Sources */,
 				192F33B0203BF8F100528CE3 /* SignUpViewController.swift in Sources */,
 				19AE385F203BD8DF007E4DE0 /* LoginViewController.swift in Sources */,
+				199D4F37203ED19300FD0C68 /* Post.swift in Sources */,
 				192F33B7203BF94700528CE3 /* CreateEventViewController.swift in Sources */,
 				192F33BE203C3D8900528CE3 /* PostTableViewCell.swift in Sources */,
-				192F33BB203C1EB900528CE3 /* CreateEventModalView.swift in Sources */,
 				19459F0A203D666E00F5A8AD /* FirebaseAPIClient.swift in Sources */,
 				19AE385D203BD8DF007E4DE0 /* AppDelegate.swift in Sources */,
 				19459F0C203D6C1500F5A8AD /* User.swift in Sources */,
 				192F33B2203BF90600528CE3 /* FeedViewController.swift in Sources */,
+				199D4F35203EC94400FD0C68 /* Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
