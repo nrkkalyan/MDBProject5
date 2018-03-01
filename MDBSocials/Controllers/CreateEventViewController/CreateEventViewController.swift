@@ -8,11 +8,13 @@
 
 import UIKit
 import FirebaseAuth
+import PromiseKit
 
 class CreateEventViewController: UIViewController {
     
     var cancelButton: UIButton!
     var nameTextView: UITextView!
+    var locationTextView: UITextView!
     var descriptionTextView: UITextView!
     var eventImageView: UIImageView!
     var chooseImageButton: UIButton!
@@ -35,10 +37,17 @@ class CreateEventViewController: UIViewController {
         imagePicker.delegate = self
         if let currUser = Auth.auth().currentUser {
             self.uid = currUser.uid
-            User.getCurrentUser(withId: uid, block: { (user) in
+//            User.getCurrentUser(withId: uid, block: { (user) in
+//                self.user = user
+//            })
+            firstly {
+                return User.getCurrentUser(withId: uid)
+            }.done { user in
                 self.user = user
-            })
+            }
         }
+        
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "hideNBar"), object: nil)
     }
     
     func addGestureRecognizer() {
@@ -52,21 +61,25 @@ class CreateEventViewController: UIViewController {
     }
     
     @objc func cancelButtonTapped() {
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "unhideNBar"), object: nil)
         dismiss(animated: true, completion: nil)
     }
     
     @objc func createButtonTapped() {
         let name = nameTextView.text ?? ""
         let description = descriptionTextView.text ?? ""
+        let location = locationTextView.text ?? ""
         let imageData = UIImageJPEGRepresentation(eventImageView.image!, 0.5)
         let date = Utils.createDateString(date: datePicker.date)
         let time = Utils.createTimeString(date: datePicker.date)
         
-        if name != "" && description != "" {
+        if name != "" && description != "" && location != "" {
             print("creating new post")
             let dateTime = "\(date)\n\(time)"
-            FirebaseAPIClient.createNewPost(name: name, description: description, date: dateTime, imageData: imageData!, host: user.name!, hostId: uid)
+            print("\(name) \(description) \(dateTime) \(user) \(uid)")
+            FirebaseDBClient.createNewPost(name: name, description: description, date: dateTime, imageData: imageData!, host: user.name!, hostId: uid)
             print("new post created")
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "unhideNBar"), object: nil)
             dismiss(animated: true, completion: nil)
         }
     }
@@ -92,11 +105,26 @@ class CreateEventViewController: UIViewController {
         nameTextView.autocapitalizationType = .words
         view.addSubview(nameTextView)
         
-        let line = UIView(frame: CGRect(x: 10, y: nameTextView.frame.maxY, width: view.frame.width - 20, height: 1))
+        var line = UIView(frame: CGRect(x: 10, y: nameTextView.frame.maxY, width: view.frame.width - 20, height: 1))
         line.backgroundColor = .gray
         view.addSubview(line)
         
-        descriptionTextView = UITextView(frame: CGRect(x: 10, y: line.frame.maxY, width: view.frame.width - 20, height: 150))
+        locationTextView = UITextView(frame: CGRect(x: 10, y: line.frame.maxY, width: view.frame.width - 20, height: 40))
+        locationTextView.text = "Location of Event"
+        locationTextView.isEditable = true
+        locationTextView.textColor = .lightGray
+        locationTextView.font = UIFont.systemFont(ofSize: 18)
+        locationTextView.isScrollEnabled = false
+        locationTextView.delegate = self
+        locationTextView.autocorrectionType = .no
+        locationTextView.autocapitalizationType = .sentences
+        view.addSubview(locationTextView)
+        
+        line = UIView(frame: CGRect(x: 10, y: locationTextView.frame.maxY, width: view.frame.width - 20, height: 1))
+        line.backgroundColor = .gray
+        view.addSubview(line)
+        
+        descriptionTextView = UITextView(frame: CGRect(x: 10, y: line.frame.maxY, width: view.frame.width - 20, height: 120))
         descriptionTextView.text = "Description of Event"
         descriptionTextView.isEditable = true
         descriptionTextView.textColor = .lightGray
@@ -109,15 +137,16 @@ class CreateEventViewController: UIViewController {
     
     func setupButtons() {
         cancelButton = UIButton(frame: CGRect(x: view.frame.width - 40, y: 10, width: 40, height: 40))
-        let attrStr = NSAttributedString(string: "×", attributes: [NSAttributedStringKey.foregroundColor: UIColor(red: 90/255, green: 200/255, blue: 250/255, alpha: 1.0), NSAttributedStringKey.font: UIFont.systemFont(ofSize: 40)])
+        let attrStr = NSAttributedString(string: "×", attributes: [NSAttributedStringKey.foregroundColor: Constants.lightBlueColor, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 40)])
         cancelButton.setAttributedTitle(attrStr, for: .normal)
         cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         view.addSubview(cancelButton)
         
-        createButton = UIButton(frame: CGRect(x: view.frame.width - 160, y: view.frame.height - 50, width: 150, height: 40))
+//        createButton = UIButton(frame: CGRect(x: view.frame.width - 160, y: view.frame.height - 50, width: 150, height: 40))
+        createButton = UIButton(frame: CGRect(x: 0, y: view.frame.height - 50, width: view.frame.width, height: 50))
         createButton.setTitle("Create Event", for: .normal)
-        createButton.backgroundColor = UIColor(red: 90/255, green: 200/255, blue: 250/255, alpha: 1.0)
-        createButton.layer.cornerRadius = 5
+        createButton.backgroundColor = Constants.lightBlueColor
+//        createButton.layer.cornerRadius = 5
         createButton.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
         view.addSubview(createButton)
     }
@@ -126,7 +155,7 @@ class CreateEventViewController: UIViewController {
         eventImageView = UIImageView(frame: CGRect(x: 10, y: descriptionTextView.frame.maxY + 10, width: view.frame.width - 20, height: 200))
         chooseImageButton = UIButton(frame: CGRect(x: view.frame.width/2 - 200, y: eventImageView.frame.maxY - eventImageView.frame.height/2 - 20, width: 400, height: 40))
         chooseImageButton.setTitle("Choose event image", for: .normal)
-        chooseImageButton.setTitleColor(UIColor(red: 90/255, green: 200/255, blue: 250/255, alpha: 1.0), for: .normal)
+        chooseImageButton.setTitleColor(Constants.lightBlueColor, for: .normal)
         chooseImageButton.addTarget(self, action: #selector(chooseImage), for: .touchUpInside)
         view.addSubview(eventImageView)
         view.addSubview(chooseImageButton)
@@ -148,10 +177,16 @@ extension CreateEventViewController: UIImagePickerControllerDelegate, UINavigati
         let chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
         eventImageView.contentMode = .scaleAspectFit
         eventImageView.image = chosenImage
-        dismiss(animated:true, completion: nil)
+        picker.dismiss(animated:true, completion: nil)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: { () in
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "hideNBar"), object: nil)
+        })
     }
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismiss(animated: true, completion: nil)
+        picker.dismiss(animated: true, completion: nil)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: { () in
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "hideNBar"), object: nil)
+        })
     }
 }
 
@@ -171,6 +206,8 @@ extension CreateEventViewController: UITextViewDelegate {
                 textView.text = "Description of Event"
             } else if textView == self.nameTextView {
                 textView.text = "Name of Event"
+            } else if textView == self.locationTextView {
+                textView.text = "Location of Event"
             }
         }
     }

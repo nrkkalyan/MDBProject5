@@ -66,18 +66,20 @@ class LoginViewController: UIViewController {
     // MARK: Creation functions
     
     func setupImageView() {
-        imageView = UIImageView(frame: CGRect(x: 0, y: 50, width: view.frame.width, height: 200))
+        imageView = UIImageView(frame: CGRect(x: 0, y: 30, width: view.frame.width, height: 200))
         imageView.image = UIImage(named: "mdb_nooutline")
         imageView.contentMode = .scaleAspectFit
         view.addSubview(imageView)
     }
     
     func setupTextFields() {
-        emailTextField = UITextField(frame: CGRect(x: indent, y: imageView.frame.maxY + 70, width: view.frame.width - 2 * indent, height: 50))
+        emailTextField = UITextField(frame: CGRect(x: indent, y: imageView.frame.maxY + 30, width: view.frame.width - 2 * indent, height: 50))
         emailTextField.placeholder = "Email"
         emailTextField.borderStyle = .roundedRect
         emailTextField.autocapitalizationType = .none
         emailTextField.autocorrectionType = .no
+        emailTextField.keyboardType = .emailAddress
+        emailTextField.textContentType = UITextContentType("")
         emailTextField.addTarget(self, action: #selector(addGestureRecognizer), for: .touchDown)
         view.addSubview(emailTextField)
         
@@ -86,6 +88,7 @@ class LoginViewController: UIViewController {
         passwordTextField.borderStyle = .roundedRect
         passwordTextField.autocorrectionType = .no
         passwordTextField.autocapitalizationType = .none
+        passwordTextField.textContentType = UITextContentType("")
         passwordTextField.isSecureTextEntry = true
         passwordTextField.addTarget(self, action: #selector(addGestureRecognizer), for: .touchDown)
         view.addSubview(passwordTextField)
@@ -93,7 +96,7 @@ class LoginViewController: UIViewController {
     
     func setupButtons() {
         loginButton = UIButton(frame: CGRect(x: indent, y: passwordTextField.frame.maxY + 20, width: view.frame.width - 2 * indent, height: 50))
-        loginButton.backgroundColor = UIColor(red: 90/255, green: 200/255, blue: 250/255, alpha: 1.0)
+        loginButton.backgroundColor = Constants.lightBlueColor
         loginButton.setTitle("Login", for: .normal)
         loginButton.layer.cornerRadius = 5
         loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
@@ -101,7 +104,7 @@ class LoginViewController: UIViewController {
         
         signupButton = UIButton(frame: CGRect(x: 0, y: view.frame.height - 50, width: view.frame.width, height: 50))
         signupButton.setTitle("Sign Up", for: .normal)
-        signupButton.setTitleColor(UIColor(red: 90/255, green: 200/255, blue: 250/255, alpha: 1.0), for: .normal)
+        signupButton.setTitleColor(Constants.lightBlueColor, for: .normal)
         signupButton.layer.borderColor = UIColor.gray.cgColor
         signupButton.layer.borderWidth = 0.5
         signupButton.addTarget(self, action: #selector(signupButtonTapped), for: .touchUpInside)

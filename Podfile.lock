@@ -1,4 +1,8 @@
 PODS:
+  - Alamofire (4.6.0)
+  - ChameleonFramework (2.1.0):
+    - ChameleonFramework/Default (= 2.1.0)
+  - ChameleonFramework/Default (2.1.0)
   - Firebase/Auth (4.9.0):
     - Firebase/Core
     - FirebaseAuth (= 4.4.3)
@@ -50,15 +54,47 @@ PODS:
     - nanopb/encode (= 0.3.8)
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
+  - ObjectMapper (3.1.0)
+  - PromiseKit (6.1.0):
+    - PromiseKit/CorePromise (= 6.1.0)
+    - PromiseKit/Foundation (= 6.1.0)
+    - PromiseKit/UIKit (= 6.1.0)
+  - PromiseKit/Alamofire (6.1.0):
+    - Alamofire (~> 4.0)
+    - PromiseKit/CorePromise
+  - PromiseKit/CorePromise (6.1.0)
+  - PromiseKit/Foundation (6.1.0):
+    - PromiseKit/CorePromise
+  - PromiseKit/UIKit (6.1.0):
+    - PromiseKit/CorePromise
+  - Spring (1.0.5)
+  - SwiftyJSON (4.0.0)
 
 DEPENDENCIES:
+  - ChameleonFramework
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Database
   - Firebase/Storage
   - MKSpinner
+  - ObjectMapper (~> 3.1)
+  - PromiseKit (~> 6.0)
+  - PromiseKit/Alamofire
+  - Spring (from `https://github.com/MengTo/Spring.git`)
+  - SwiftyJSON
+
+EXTERNAL SOURCES:
+  Spring:
+    :git: https://github.com/MengTo/Spring.git
+
+CHECKOUT OPTIONS:
+  Spring:
+    :commit: 19b04d730d3edabbb02a39e58121d1d3220690ee
+    :git: https://github.com/MengTo/Spring.git
 
 SPEC CHECKSUMS:
+  Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
+  ChameleonFramework: d21a3cc247abfe5e37609a283a8238b03575cf64
   Firebase: 632216af3ed7f31e3be34776947fdc7546cfb572
   FirebaseAnalytics: 388b630c15713f5dbf364071f5f3d6077fb52f4e
   FirebaseAuth: aaaf68d5064a6c8fec435758f83a43b8db26ccaa
@@ -71,7 +107,11 @@ SPEC CHECKSUMS:
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   MKSpinner: 342cc7f8fbb365dd139a8ad28a0a987cca440a3a
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
+  ObjectMapper: 20505058f54e5c3ca69e1d6de9897d152a5369a6
+  PromiseKit: cf84274e6d2bec1d42e21ade146645752b0b7bed
+  Spring: 48aad470f3ead043b2da98b64e0bf0630b7ebc42
+  SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
 
-PODFILE CHECKSUM: 9f4ec54961177b2ef43edc127e43e8e338ea8ca9
+PODFILE CHECKSUM: bffdba3698a16edff4c9d7c26bf13c92750c2d57
 
 COCOAPODS: 1.4.0

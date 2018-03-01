@@ -8,6 +8,7 @@
 
 import UIKit
 import FirebaseAuth
+import PromiseKit
 
 class EventDetailViewController: UIViewController {
 
@@ -16,9 +17,11 @@ class EventDetailViewController: UIViewController {
     var dateLabel: UILabel!
     var eventImageView: UIImageView!
     var interestButton: UIButton!
-    var interestLabel: UILabel!
+    var interestLabel: UIButton!
     var descriptionLabel: UILabel!
     var scrollView: UIScrollView!
+    var interestedDetailView: InterestedDetailView!
+    var modalView: AKModalView!
     
     var post: Post!
     var uid: String!
@@ -38,7 +41,7 @@ class EventDetailViewController: UIViewController {
     func interestButtonChecked() {
         if uid.elementsEqual(post.hostId) || post.interested.contains(uid) {
             interestButton.setTitle("Interested", for: .normal)
-            interestButton.backgroundColor = Utils.lightBlue
+            interestButton.backgroundColor = Constants.lightBlueColor
             interestButton.layer.borderWidth = 0
             interestButton.setTitleColor(.white, for: .normal)
         } else {
@@ -49,15 +52,51 @@ class EventDetailViewController: UIViewController {
         }
     }
     
+    func fetchUsers(uids: [String]) -> Promise<[User]> {
+        return Promise { seal in
+            let group = DispatchGroup()
+            var users: [User] = []
+            for uid in uids {
+                group.enter()
+                firstly {
+                    return FirebaseDBClient.fetchUser(id: uid)
+                }.done { user in
+                    users.append(user)
+                    user.getEventImage(withBlock: { () in
+                        group.leave()
+                    })
+                }
+            }
+            group.notify(queue: DispatchQueue.main, execute: { () in
+                seal.fulfill(users)
+            })
+        }
+    }
+    
     @objc func interestButtonTapped() {
         
         // host has to be interested!
         if !uid.elementsEqual(post.hostId) {
-            FirebaseAPIClient.updateInterestedCounter(uid: uid, pid: post.postId, withBlock: { (interested) in
+            FirebaseDBClient.updateInterestedCounter(uid: uid, pid: post.postId, withBlock: { (interested) in
                 self.post.interested = interested
-                self.interestLabel.text = "Interested: \(self.post.interested.count)"
+//                self.interestLabel.text = "Interested: \(self.post.interested.count)"
+                self.interestLabel.setTitle("Interested: \(self.post.interested.count)", for: .normal)
                 self.interestButtonChecked()
             })
+        }
+    }
+    
+    @objc func showInterested() {
+        let navBarHeight = navigationController?.navigationBar.frame.height
+        let statusBarHeight = UIApplication.shared.statusBarFrame.height
+        firstly {
+            return fetchUsers(uids: post.interested)
+        }.done { users in
+            self.interestedDetailView = InterestedDetailView(frame: CGRect(x: 0, y: 70, width: self.view.frame.width - 60, height: self.view.frame.height - 75 - (110 - navBarHeight! - statusBarHeight)), users: users)
+            self.modalView = AKModalView(view: self.interestedDetailView)
+            self.modalView.dismissAnimation = .FadeOut
+            self.navigationController?.view.addSubview(self.modalView)
+            self.modalView.show()
         }
     }
     
@@ -79,8 +118,14 @@ class EventDetailViewController: UIViewController {
         dateLabel.text = "\(date[1]) \(date[0])"
         dateLabel.textAlignment = .center
         
-        interestLabel = UILabel(frame: CGRect(x: 10, y: dateLabel.frame.maxY + 5, width: view.frame.width - 20, height: 30))
-        interestLabel.text = "Interested: \(post.interested.count)"
+        interestLabel = UIButton(frame: CGRect(x: 10, y: dateLabel.frame.maxY + 5, width: 150, height: 30))
+//        interestLabel.text = "Interested: \(post.interested.count)"
+//        interestLabel.textColor = Constants.lightBlueColor
+        interestLabel.contentHorizontalAlignment = .left
+        interestLabel.setTitle("Interested: \(post.interested.count)", for: .normal)
+        interestLabel.setTitleColor(Constants.lightBlueColor, for: .normal)
+        interestLabel.addTarget(self, action: #selector(showInterested), for: .touchUpInside)
+        
         
         // places descriptionLabel below image view
         setupImageView()

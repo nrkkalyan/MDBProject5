@@ -11,8 +11,6 @@ import UIKit
 
 class Utils {
     
-    static let lightBlue = UIColor(red: 90/255, green: 200/255, blue: 250/255, alpha: 1.0)
-    
     static func createDateString(date: Date) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US")
@@ -25,6 +23,20 @@ class Utils {
         dateFormatter.locale = Locale(identifier: "en_US")
         dateFormatter.setLocalizedDateFormatFromTemplate("h:mm a")
         return dateFormatter.string(from: date)
+    }
+    
+    static func sortPosts(posts: [Post]) -> [Post] {
+        var sorted = posts.sorted(by: { (post1, post2) in
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "MMMMd h:mm a"
+            
+            let dateStr1 = post1.date.replacingOccurrences(of: "\n", with: " ")
+            let dateStr2 = post2.date.replacingOccurrences(of: "\n", with: " ")
+            let date1 = dateFormatter.date(from: dateStr1)
+            let date2 = dateFormatter.date(from: dateStr2)
+            return date1! < date2!
+        })
+        return sorted
     }
     
 }

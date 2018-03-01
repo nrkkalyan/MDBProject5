@@ -9,8 +9,9 @@
 import Foundation
 import UIKit
 import FirebaseStorage
+import ObjectMapper
 
-class Post {
+class Post: Mappable {
     
     var name: String!
     var description: String!
@@ -22,31 +23,46 @@ class Post {
     var image: UIImage!
     var interested: [String]!
     
-    init(id: String, postDict: [String:Any]?) {
-        postId = id
-        if postDict != nil {
-            if let name = postDict!["name"] as? String {
-                self.name = name
-            }
-            if let description = postDict!["description"] as? String {
-                self.description = description
-            }
-            if let date = postDict!["date"] as? String {
-                self.date = date
-            }
-            if let imageUrl = postDict!["imageUrl"] as? String {
-                self.imageUrl = imageUrl
-            }
-            if let host = postDict!["host"] as? String {
-                self.host = host
-            }
-            if let hostId = postDict!["hostId"] as? String {
-                self.hostId = hostId
-            }
-            if let interested = postDict!["interested"] as? [String] {
-                self.interested = interested
-            }
-        }
+//    init(id: String, postDict: [String:Any]?) {
+//        postId = id
+//        if postDict != nil {
+//            if let name = postDict!["name"] as? String {
+//                self.name = name
+//            }
+//            if let description = postDict!["description"] as? String {
+//                self.description = description
+//            }
+//            if let date = postDict!["date"] as? String {
+//                self.date = date
+//            }
+//            if let imageUrl = postDict!["imageUrl"] as? String {
+//                self.imageUrl = imageUrl
+//            }
+//            if let host = postDict!["host"] as? String {
+//                self.host = host
+//            }
+//            if let hostId = postDict!["hostId"] as? String {
+//                self.hostId = hostId
+//            }
+//            if let interested = postDict!["interested"] as? [String] {
+//                self.interested = interested
+//            }
+//        }
+//    }
+    
+    required init?(map: Map) {
+        
+    }
+    
+    func mapping(map: Map) {
+        name                    <- map["name"]
+        description             <- map["description"]
+        imageUrl                <- map["imageUrl"]
+        host                    <- map["host"]
+        hostId                  <- map["hostId"]
+        postId                  <- map["postId"]
+        date                    <- map["date"]
+        interested              <- map["interested"]
     }
     
     func getEventImage(withBlock: @escaping () -> ()) {

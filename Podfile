@@ -9,5 +9,11 @@ target 'MDBSocials' do
   pod 'Firebase/Auth'
   pod 'Firebase/Storage'
   pod 'MKSpinner'
+  pod 'ChameleonFramework'
+  pod 'SwiftyJSON'
+  pod "PromiseKit", "~> 6.0"
+  pod 'PromiseKit/Alamofire'
+  pod 'ObjectMapper', '~> 3.1'
+  pod 'Spring', :git => 'https://github.com/MengTo/Spring.git'
 
 end

@@ -10,6 +10,9 @@ import UIKit
 
 class SignUpViewController: UIViewController {
 
+    var profileImageView: UIImageView!
+    var profileImageButton: UIButton!
+    var imagePicker = UIImagePickerController()
     var nameTextField: UITextField!
     var emailTextField: UITextField!
     var usernameTextField: UITextField!
@@ -23,8 +26,11 @@ class SignUpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupImageView()
         setupTextFields()
         setupButtons()
+        
+        imagePicker.delegate = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -36,15 +42,18 @@ class SignUpViewController: UIViewController {
         let email = emailTextField.text ?? ""
         let username = usernameTextField.text ?? ""
         let password = passwordTextField.text ?? ""
+        let imageData = UIImageJPEGRepresentation(profileImageView.image!, 0.5)
         print("tapped")
         if name != "" && email != "" && username != "" && password != "" {
             print("passed")
             UserAuthHelper.createUser(email: email, password: password, withBlock: { (uid) in
-                FirebaseAPIClient.createNewUser(uid: uid, name: name, username: username, email: email)
+                FirebaseDBClient.createNewUser(uid: uid, name: name, username: username, email: email, imageData: imageData!)
                 self.nameTextField.text = ""
                 self.emailTextField.text = ""
                 self.usernameTextField.text = ""
                 self.passwordTextField.text = ""
+                self.profileImageView.image = nil
+                self.profileImageButton.setTitle("Choose profile image", for: .normal)
                 self.performSegue(withIdentifier: "toFeed", sender: self)
             })
         }
@@ -64,10 +73,28 @@ class SignUpViewController: UIViewController {
         view.removeGestureRecognizer(tap)
     }
     
+    @objc func chooseImage(sender: UIButton!) {
+        imagePicker.allowsEditing = true
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
+        present(imagePicker, animated: true, completion: nil)
+    }
+    
     // MARK: Creation functions
     
+    func setupImageView() {
+        profileImageView = UIImageView(frame: CGRect(x: view.frame.width/2 - 50, y: 30, width: 100, height: 100))
+        profileImageButton = UIButton(frame: CGRect(x: view.frame.width/2 - 100, y: profileImageView.frame.maxY - profileImageView.frame.height/2 - 25, width: 200, height: 50))
+        profileImageButton.setTitle("Choose profile image", for: .normal)
+        profileImageButton.setTitleColor(Constants.lightBlueColor, for: .normal)
+        profileImageButton.addTarget(self, action: #selector(chooseImage), for: .touchUpInside)
+        view.addSubview(profileImageView)
+        view.addSubview(profileImageButton)
+        view.bringSubview(toFront: profileImageButton)
+    }
+    
     func setupTextFields() {
-        nameTextField = UITextField(frame: CGRect(x: indent, y: 100, width: view.frame.width - 2 * indent, height: 50))
+        nameTextField = UITextField(frame: CGRect(x: indent, y: profileImageView.frame.maxY + 15, width: view.frame.width - 2 * indent, height: 50))
         nameTextField.placeholder = "Full Name"
         nameTextField.borderStyle = .roundedRect
         nameTextField.autocorrectionType = .no
@@ -80,6 +107,7 @@ class SignUpViewController: UIViewController {
         emailTextField.borderStyle = .roundedRect
         emailTextField.autocorrectionType = .no
         emailTextField.autocapitalizationType = .none
+        emailTextField.keyboardType = .emailAddress
         emailTextField.addTarget(self, action: #selector(addGestureRecognizer), for: .touchDown)
         view.addSubview(emailTextField)
         
@@ -88,6 +116,7 @@ class SignUpViewController: UIViewController {
         usernameTextField.borderStyle = .roundedRect
         usernameTextField.autocorrectionType = .no
         usernameTextField.autocapitalizationType = .none
+        usernameTextField.textContentType = UITextContentType("")
         usernameTextField.addTarget(self, action: #selector(addGestureRecognizer), for: .touchDown)
         view.addSubview(usernameTextField)
         
@@ -96,6 +125,7 @@ class SignUpViewController: UIViewController {
         passwordTextField.borderStyle = .roundedRect
         passwordTextField.autocapitalizationType = .none
         passwordTextField.autocorrectionType = .no
+        passwordTextField.textContentType = UITextContentType("")
         passwordTextField.isSecureTextEntry = true
         passwordTextField.addTarget(self, action: #selector(addGestureRecognizer), for: .touchDown)
         view.addSubview(passwordTextField)
@@ -104,18 +134,32 @@ class SignUpViewController: UIViewController {
     func setupButtons() {
         signupButton = UIButton(frame: CGRect(x: indent, y: passwordTextField.frame.maxY + 20, width: view.frame.width - 2 * indent, height: 50))
         signupButton.setTitle("Sign Up", for: .normal)
-        signupButton.backgroundColor = UIColor(red: 90/255, green: 200/255, blue: 250/255, alpha: 1.0)
+        signupButton.backgroundColor = Constants.lightBlueColor
         signupButton.layer.cornerRadius = 5
         signupButton.addTarget(self, action: #selector(signupButtonTapped), for: .touchUpInside)
         view.addSubview(signupButton)
         
         backToLoginButton = UIButton(frame: CGRect(x: 0, y: view.frame.height - 50, width: view.frame.width, height: 50))
         backToLoginButton.setTitle("Sign In", for: .normal)
-        backToLoginButton.setTitleColor(UIColor(red: 90/255, green: 200/255, blue: 250/255, alpha: 1.0), for: .normal)
+        backToLoginButton.setTitleColor(Constants.lightBlueColor, for: .normal)
         backToLoginButton.layer.borderColor = UIColor.gray.cgColor
         backToLoginButton.layer.borderWidth = 0.5
         backToLoginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
         view.addSubview(backToLoginButton)
     }
 
+}
+
+extension SignUpViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    @objc func imagePickerController(_ picker: UIImagePickerController,
+                                     didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        profileImageButton.setTitle("", for: .normal)
+        let chosenImage = info[UIImagePickerControllerEditedImage] as! UIImage
+        profileImageView.contentMode = .scaleAspectFit
+        profileImageView.image = chosenImage
+        dismiss(animated:true, completion: nil)
+    }
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
 }
