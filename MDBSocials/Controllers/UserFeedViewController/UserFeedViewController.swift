@@ -49,15 +49,23 @@ class UserFeedViewController: UIViewController {
                     self.tableView.reloadData()
                 } else {
                     self.posts[postIndex] = update
-                    self.posts[postIndex].getEventImage(withBlock: { () in
+                    firstly {
+                        return Utils.getImage(withUrl: update.imageUrl)
+                    }.done { image in
+                        update.image = image
                         self.tableView.reloadData()
-                    })
+                    }
+                    self.tableView.reloadData()
                 }
             } else if update.interested.contains(self.uid) {
                 self.posts.append(update)
-                update.getEventImage(withBlock: { () in
-                    self.tableView.reloadData()
-                })
+                firstly {
+                    return Utils.getImage(withUrl: update.imageUrl)
+                }.done { image in
+                    update.image = image
+                        self.tableView.reloadData()
+                }
+                self.tableView.reloadData()
             }
             self.posts = Utils.sortPosts(posts: self.posts)
         })
@@ -73,10 +81,15 @@ class UserFeedViewController: UIViewController {
             if let post = Post(JSON: result) {
                 if post.hostId == uid {
                     self.posts.append(post)
-                    post.getEventImage(withBlock: { () in
-                        self.tableView.reloadData()
+                    firstly {
+                        return Utils.getImage(withUrl: post.imageUrl)
+                    }.done { image in
+                        post.image = image
                         self.posts = Utils.sortPosts(posts: self.posts)
-                    })
+                        self.tableView.reloadData()
+                    }
+                    self.posts = Utils.sortPosts(posts: self.posts)
+                    self.tableView.reloadData()
                 }
             }
         }
@@ -101,9 +114,12 @@ class UserFeedViewController: UIViewController {
                 return FirebaseDBClient.fetchPost(pid: event)
             }.done { post in
                 self.posts.append(post)
-                post.getEventImage(withBlock: { () in
+                firstly {
+                    return Utils.getImage(withUrl: post.imageUrl)
+                }.done { image in
+                    post.image = image
                     group.leave()
-                })
+                }
             }
         }
         group.notify(queue: DispatchQueue.main, execute: {

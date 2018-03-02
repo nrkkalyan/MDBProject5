@@ -59,9 +59,7 @@ extension FirebaseDBClient {
                     if let user = User(JSON: result) {
                         seal.fulfill(user)
                     }
-                }//.catch { error in
-//                    seal.reject(error)
-//                }
+                }
             })
         }
     }

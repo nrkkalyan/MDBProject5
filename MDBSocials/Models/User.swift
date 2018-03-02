@@ -61,16 +61,16 @@ class User: Mappable {
         return FirebaseDBClient.fetchUser(id: withId)
     }
     
-    func getEventImage(withBlock: @escaping () -> ()) {
-        let ref = Storage.storage().reference().child("/Profile Images/\(uid!)")
-        ref.getData(maxSize: 5 * 2048 * 2048, completion: { data, error in
-            if let error = error {
-                print(error)
-            } else {
-                self.image = UIImage(data: data!)
-                withBlock()
-            }
-        })
-    }
+//    func getEventImage(withBlock: @escaping () -> ()) {
+//        let ref = Storage.storage().reference().child("/Profile Images/\(uid!)")
+//        ref.getData(maxSize: 5 * 2048 * 2048, completion: { data, error in
+//            if let error = error {
+//                print(error)
+//            } else {
+//                self.image = UIImage(data: data!)
+//                withBlock()
+//            }
+//        })
+//    }
     
 }

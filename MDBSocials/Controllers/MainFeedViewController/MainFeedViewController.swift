@@ -29,10 +29,15 @@ class MainFeedViewController: UIViewController {
         
         FirebaseDBClient.fetchPosts(withBlock: { (post) in
             self.posts.insert(post, at: 0)
-            post.getEventImage(withBlock: { () in
-                self.tableView.reloadData()
+            firstly {
+                return Utils.getImage(withUrl: post.imageUrl)
+            }.done { image in
+                post.image = image
                 self.posts = Utils.sortPosts(posts: self.posts)
-            })
+                self.tableView.reloadData()
+            }
+            self.posts = Utils.sortPosts(posts: self.posts)
+            self.tableView.reloadData()
         })
         
 //        firstly {
@@ -50,9 +55,13 @@ class MainFeedViewController: UIViewController {
             }) {
                 print(postIndex)
                 self.posts[postIndex] = update
-                self.posts[postIndex].getEventImage(withBlock: { () in
+                firstly {
+                    return Utils.getImage(withUrl: self.posts[postIndex].imageUrl)
+                }.done { image in
+                    self.posts[postIndex].image = image
                     self.tableView.reloadData()
-                })
+                }
+                self.tableView.reloadData()
             }
         })
     }

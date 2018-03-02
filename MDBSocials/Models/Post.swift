@@ -15,6 +15,7 @@ class Post: Mappable {
     
     var name: String!
     var description: String!
+    var location: String!
     var imageUrl: String!
     var host: String!
     var hostId: String!
@@ -57,6 +58,7 @@ class Post: Mappable {
     func mapping(map: Map) {
         name                    <- map["name"]
         description             <- map["description"]
+        location                <- map["location"]
         imageUrl                <- map["imageUrl"]
         host                    <- map["host"]
         hostId                  <- map["hostId"]
@@ -65,16 +67,16 @@ class Post: Mappable {
         interested              <- map["interested"]
     }
     
-    func getEventImage(withBlock: @escaping () -> ()) {
-        let ref = Storage.storage().reference().child("/Event Images/\(postId!)")
-        ref.getData(maxSize: 5 * 2048 * 2048, completion: { data, error in
-            if let error = error {
-                print(error)
-            } else {
-                self.image = UIImage(data: data!)
-                withBlock()
-            }
-        })
-    }
+//    func getEventImage(withBlock: @escaping () -> ()) {
+//        let ref = Storage.storage().reference().child("/Event Images/\(postId!)")
+//        ref.getData(maxSize: 5 * 2048 * 2048, completion: { data, error in
+//            if let error = error {
+//                print(error)
+//            } else {
+//                self.image = UIImage(data: data!)
+//                withBlock()
+//            }
+//        })
+//    }
     
 }

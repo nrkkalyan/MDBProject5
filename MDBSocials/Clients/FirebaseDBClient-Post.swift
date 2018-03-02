@@ -17,9 +17,6 @@ extension FirebaseDBClient {
     static func updatePost(withBlock: @escaping (Post) -> ()) {
         let ref = Database.database().reference().child("Posts")
         ref.observe(.childChanged, with: { (snapshot) in
-            //            let post = Post(id: snapshot.key, postDict: snapshot.value as! [String:Any]?)
-            //            withBlock(post)
-            
             let json = JSON(snapshot.value)
             if let result = json.dictionaryObject {
                 if let post = Post(JSON: result) {
@@ -60,9 +57,6 @@ extension FirebaseDBClient {
     static func fetchPosts(withBlock: @escaping (Post) -> ()) {
         let ref = Database.database().reference()
         ref.child("Posts").observe(.childAdded, with: { (snapshot) in
-            //            let post = Post(id: snapshot.key, postDict: snapshot.value as! [String : Any]?)
-            //            withBlock(post)
-
             let json = JSON(snapshot.value)
             if let result = json.dictionaryObject {
                 if let post = Post(JSON: result) {
@@ -111,7 +105,7 @@ extension FirebaseDBClient {
         }
     }
     
-    static func createNewPost(name: String, description: String, date: String, imageData: Data, host: String, hostId: String) {
+    static func createNewPost(name: String, description: String, location: String, date: String, imageData: Data, host: String, hostId: String) {
         
         let postsRef = Database.database().reference().child("Posts")
         let key = postsRef.childByAutoId().key
@@ -123,16 +117,25 @@ extension FirebaseDBClient {
         storage.putData(imageData, metadata: metadata).observe(.success) { (snapshot) in
             print("image stored")
             let url = snapshot.metadata?.downloadURL()?.absoluteString as! String
-            
+
             let interested = [hostId]
-            let newPost = ["postId": key, "name": name, "description": description, "date": date, "imageUrl": url, "host": host, "hostId": hostId, "interested": interested] as [String : Any]
+            let newPost = ["postId": key, "name": name, "description": description, "location": location, "date": date, "imageUrl": url, "host": host, "hostId": hostId, "interested": interested] as [String : Any]
             let childUpdates = ["/\(key)/": newPost]
             postsRef.updateChildValues(childUpdates)
-            
+
             updateEvents(uid: hostId, pid: key, userCreated: true)
-            
+
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPost"), object: nil, userInfo: newPost)
         }
+        
+//        let interested = [hostId]
+//        let newPost = ["postId": key, "name": name, "description": description, "location": location, "date": date, "imageUrl": "url", "host": host, "hostId": hostId, "interested": interested] as [String : Any]
+//        let childUpdates = ["/\(key)/": newPost]
+//        postsRef.updateChildValues(childUpdates)
+//
+//        updateEvents(uid: hostId, pid: key, userCreated: true)
+//
+//        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPost"), object: nil, userInfo: newPost)
     }
     
 }

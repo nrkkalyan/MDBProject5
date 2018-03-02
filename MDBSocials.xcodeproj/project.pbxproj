@@ -13,6 +13,7 @@
 		192F33B7203BF94700528CE3 /* CreateEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192F33B6203BF94700528CE3 /* CreateEventViewController.swift */; };
 		192F33B9203BF95000528CE3 /* EventDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192F33B8203BF95000528CE3 /* EventDetailViewController.swift */; };
 		192F33BE203C3D8900528CE3 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192F33BD203C3D8900528CE3 /* PostTableViewCell.swift */; };
+		19397E4420495FA900F8ECFD /* FOAASClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19397E4320495FA900F8ECFD /* FOAASClient.swift */; };
 		19459F0A203D666E00F5A8AD /* FirebaseDBClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19459F09203D666E00F5A8AD /* FirebaseDBClient.swift */; };
 		19459F0C203D6C1500F5A8AD /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19459F0B203D6C1500F5A8AD /* User.swift */; };
 		19459F0E203D740000F5A8AD /* UserAuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19459F0D203D740000F5A8AD /* UserAuthHelper.swift */; };
@@ -23,6 +24,8 @@
 		197B7EAB2046889D00431541 /* FirebaseDBClient-User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197B7EAA2046889D00431541 /* FirebaseDBClient-User.swift */; };
 		197B7EAD204688D500431541 /* FirebaseDBClient-Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197B7EAC204688D500431541 /* FirebaseDBClient-Post.swift */; };
 		197B7EB02046B98000431541 /* UserFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197B7EAF2046B98000431541 /* UserFeedViewController.swift */; };
+		197EE39E2048EC80008F314D /* GoogleCalendarRestAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197EE39D2048EC80008F314D /* GoogleCalendarRestAPIClient.swift */; };
+		197EE3A02048FA75008F314D /* credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = 197EE39F2048FA75008F314D /* credentials.plist */; };
 		199D4F35203EC94400FD0C68 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 199D4F34203EC94400FD0C68 /* Utils.swift */; };
 		199D4F37203ED19300FD0C68 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 199D4F36203ED19300FD0C68 /* Post.swift */; };
 		19AE385D203BD8DF007E4DE0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19AE385C203BD8DF007E4DE0 /* AppDelegate.swift */; };
@@ -59,6 +62,7 @@
 		192F33B6203BF94700528CE3 /* CreateEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEventViewController.swift; sourceTree = "<group>"; };
 		192F33B8203BF95000528CE3 /* EventDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailViewController.swift; sourceTree = "<group>"; };
 		192F33BD203C3D8900528CE3 /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
+		19397E4320495FA900F8ECFD /* FOAASClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FOAASClient.swift; sourceTree = "<group>"; };
 		19459F09203D666E00F5A8AD /* FirebaseDBClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseDBClient.swift; sourceTree = "<group>"; };
 		19459F0B203D6C1500F5A8AD /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		19459F0D203D740000F5A8AD /* UserAuthHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAuthHelper.swift; sourceTree = "<group>"; };
@@ -69,6 +73,8 @@
 		197B7EAA2046889D00431541 /* FirebaseDBClient-User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FirebaseDBClient-User.swift"; sourceTree = "<group>"; };
 		197B7EAC204688D500431541 /* FirebaseDBClient-Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FirebaseDBClient-Post.swift"; sourceTree = "<group>"; };
 		197B7EAF2046B98000431541 /* UserFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFeedViewController.swift; sourceTree = "<group>"; };
+		197EE39D2048EC80008F314D /* GoogleCalendarRestAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleCalendarRestAPIClient.swift; sourceTree = "<group>"; };
+		197EE39F2048FA75008F314D /* credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = credentials.plist; sourceTree = "<group>"; };
 		199D4F34203EC94400FD0C68 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		199D4F36203ED19300FD0C68 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		19AE3859203BD8DF007E4DE0 /* MDBSocials.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MDBSocials.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -139,6 +145,8 @@
 				19459F09203D666E00F5A8AD /* FirebaseDBClient.swift */,
 				197B7EAA2046889D00431541 /* FirebaseDBClient-User.swift */,
 				197B7EAC204688D500431541 /* FirebaseDBClient-Post.swift */,
+				197EE39D2048EC80008F314D /* GoogleCalendarRestAPIClient.swift */,
+				19397E4320495FA900F8ECFD /* FOAASClient.swift */,
 			);
 			path = Clients;
 			sourceTree = "<group>";
@@ -284,6 +292,7 @@
 				19AE3865203BD8DF007E4DE0 /* LaunchScreen.storyboard */,
 				19AE3868203BD8DF007E4DE0 /* Info.plist */,
 				192F339C203BF33300528CE3 /* GoogleService-Info.plist */,
+				197EE39F2048FA75008F314D /* credentials.plist */,
 			);
 			path = MDBSocials;
 			sourceTree = "<group>";
@@ -436,6 +445,7 @@
 			files = (
 				19AE3867203BD8DF007E4DE0 /* LaunchScreen.storyboard in Resources */,
 				192F339D203BF33300528CE3 /* GoogleService-Info.plist in Resources */,
+				197EE3A02048FA75008F314D /* credentials.plist in Resources */,
 				19AE3864203BD8DF007E4DE0 /* Assets.xcassets in Resources */,
 				19AE3862203BD8DF007E4DE0 /* Main.storyboard in Resources */,
 			);
@@ -467,29 +477,33 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-MDBSocials/Pods-MDBSocials-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/ChameleonFramework/ChameleonFramework.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
-				"${BUILT_PRODUCTS_DIR}/MKSpinner/MKSpinner.framework",
+				"${BUILT_PRODUCTS_DIR}/HanekeSwift/Haneke.framework",
 				"${BUILT_PRODUCTS_DIR}/ObjectMapper/ObjectMapper.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Spring/Spring.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+				"${BUILT_PRODUCTS_DIR}/p2.OAuth2/p2_OAuth2.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ChameleonFramework.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MKSpinner.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Haneke.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectMapper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Spring.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/p2_OAuth2.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -520,9 +534,12 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-MDBSocials/Pods-MDBSocials-resources.sh",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -538,6 +555,7 @@
 			files = (
 				192F33B9203BF95000528CE3 /* EventDetailViewController.swift in Sources */,
 				19459F0E203D740000F5A8AD /* UserAuthHelper.swift in Sources */,
+				197EE39E2048EC80008F314D /* GoogleCalendarRestAPIClient.swift in Sources */,
 				1966B8EA20480EF600FFF998 /* InterestedDetailView.swift in Sources */,
 				192F33B0203BF8F100528CE3 /* SignUpViewController.swift in Sources */,
 				197B7EAD204688D500431541 /* FirebaseDBClient-Post.swift in Sources */,
@@ -549,6 +567,7 @@
 				197B7EB02046B98000431541 /* UserFeedViewController.swift in Sources */,
 				19459F0A203D666E00F5A8AD /* FirebaseDBClient.swift in Sources */,
 				19AE385D203BD8DF007E4DE0 /* AppDelegate.swift in Sources */,
+				19397E4420495FA900F8ECFD /* FOAASClient.swift in Sources */,
 				1966B8ED2048120E00FFF998 /* InterestedTableViewCell.swift in Sources */,
 				197B7EAB2046889D00431541 /* FirebaseDBClient-User.swift in Sources */,
 				19459F0C203D6C1500F5A8AD /* User.swift in Sources */,

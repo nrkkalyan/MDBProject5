@@ -37,9 +37,6 @@ class CreateEventViewController: UIViewController {
         imagePicker.delegate = self
         if let currUser = Auth.auth().currentUser {
             self.uid = currUser.uid
-//            User.getCurrentUser(withId: uid, block: { (user) in
-//                self.user = user
-//            })
             firstly {
                 return User.getCurrentUser(withId: uid)
             }.done { user in
@@ -77,7 +74,7 @@ class CreateEventViewController: UIViewController {
             print("creating new post")
             let dateTime = "\(date)\n\(time)"
             print("\(name) \(description) \(dateTime) \(user) \(uid)")
-            FirebaseDBClient.createNewPost(name: name, description: description, date: dateTime, imageData: imageData!, host: user.name!, hostId: uid)
+            FirebaseDBClient.createNewPost(name: name, description: description, location: location, date: dateTime, imageData: imageData!, host: user.name!, hostId: uid)
             print("new post created")
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "unhideNBar"), object: nil)
             dismiss(animated: true, completion: nil)
@@ -117,7 +114,7 @@ class CreateEventViewController: UIViewController {
         locationTextView.isScrollEnabled = false
         locationTextView.delegate = self
         locationTextView.autocorrectionType = .no
-        locationTextView.autocapitalizationType = .sentences
+        locationTextView.autocapitalizationType = .words
         view.addSubview(locationTextView)
         
         line = UIView(frame: CGRect(x: 10, y: locationTextView.frame.maxY, width: view.frame.width - 20, height: 1))
