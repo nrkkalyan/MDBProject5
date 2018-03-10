@@ -17,5 +17,6 @@ target 'MDBSocials' do
   pod 'HanekeSwift', :git => 'https://github.com/Haneke/HanekeSwift.git', :branch => 'feature/swift-3'
   pod 'GoogleSignIn'
   pod 'p2.OAuth2', '~> 4.0'
+  pod 'SwiftyBeaver'
 
 end

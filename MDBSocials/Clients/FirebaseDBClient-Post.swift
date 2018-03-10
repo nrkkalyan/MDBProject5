@@ -26,32 +26,34 @@ extension FirebaseDBClient {
         })
     }
     
-    static func updateInterestedCounter(uid: String, pid: String, withBlock: @escaping ([String]) -> ()) {
-        let postRef = Database.database().reference().child("Posts/\(pid)")
-        postRef.runTransactionBlock({ (currentData: MutableData) -> TransactionResult in
-            if var post = currentData.value as? [String:Any] {
-                var interested: [String]
-                interested = post["interested"] as? [String] ?? []
-                if interested.contains(uid) {
-                    interested.remove(at: interested.index(of: uid)!)
+    static func updateInterestedCounter(uid: String, pid: String) -> Promise<[String]> {
+        return Promise { seal in
+            let postRef = Database.database().reference().child("Posts/\(pid)")
+            postRef.runTransactionBlock({ (currentData: MutableData) -> TransactionResult in
+                if var post = currentData.value as? [String:Any] {
+                    var interested: [String]
+                    interested = post["interested"] as? [String] ?? []
+                    if interested.contains(uid) {
+                        interested.remove(at: interested.index(of: uid)!)
+                    } else {
+                        interested.append(uid)
+                    }
+                    post["interested"] = interested.count != 0 ? interested : [String]()
+                    currentData.value = post
+                }
+                return TransactionResult.success(withValue: currentData)
+            }, andCompletionBlock: { (error, commited, snapshot) in
+                if let error = error {
+                    log.error(error.localizedDescription)
                 } else {
-                    interested.append(uid)
+                    if var post = snapshot?.value as? [String:Any] {
+                        let interested = post["interested"] as? [String] ?? []
+                        seal.fulfill(interested)
+                        updateEvents(uid: uid, pid: pid, userCreated: false)
+                    }
                 }
-                post["interested"] = interested.count != 0 ? interested : [String]()
-                currentData.value = post
-            }
-            return TransactionResult.success(withValue: currentData)
-        }, andCompletionBlock: { (error, commited, snapshot) in
-            if let error = error {
-                print(error.localizedDescription)
-            } else {
-                if var post = snapshot?.value as? [String:Any] {
-                    let interested = post["interested"] as? [String] ?? []
-                    withBlock(interested)
-                    updateEvents(uid: uid, pid: pid, userCreated: false)
-                }
-            }
-        })
+            })
+        }
     }
     
     static func fetchPosts(withBlock: @escaping (Post) -> ()) {
@@ -113,9 +115,9 @@ extension FirebaseDBClient {
         let storage = Storage.storage().reference().child("Event Images/\(key)")
         let metadata = StorageMetadata()
         metadata.contentType = "image/jpeg"
-        print("starting image storage")
+        log.info("Starting event image storage.")
         storage.putData(imageData, metadata: metadata).observe(.success) { (snapshot) in
-            print("image stored")
+            log.info("Event image stored.")
             let url = snapshot.metadata?.downloadURL()?.absoluteString as! String
 
             let interested = [hostId]
@@ -127,15 +129,6 @@ extension FirebaseDBClient {
 
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPost"), object: nil, userInfo: newPost)
         }
-        
-//        let interested = [hostId]
-//        let newPost = ["postId": key, "name": name, "description": description, "location": location, "date": date, "imageUrl": "url", "host": host, "hostId": hostId, "interested": interested] as [String : Any]
-//        let childUpdates = ["/\(key)/": newPost]
-//        postsRef.updateChildValues(childUpdates)
-//
-//        updateEvents(uid: hostId, pid: key, userCreated: true)
-//
-//        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "newPost"), object: nil, userInfo: newPost)
     }
     
 }

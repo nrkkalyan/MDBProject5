@@ -18,9 +18,9 @@ extension FirebaseDBClient {
         let storage = Storage.storage().reference().child("Profile Images/\(uid)")
         let metadata = StorageMetadata()
         metadata.contentType = "image/jpeg"
-        print("starting image storage")
+        log.info("Starting profile image storage")
         storage.putData(imageData, metadata: metadata).observe(.success) { (snapshot) in
-            print("image stored")
+            log.info("Profile image stored.")
             let url = snapshot.metadata?.downloadURL()?.absoluteString as! String
             
             let usersRef = Database.database().reference().child("Users")
@@ -92,7 +92,7 @@ extension FirebaseDBClient {
             return TransactionResult.success(withValue: currentData)
         }, andCompletionBlock: { (error, commited, snapshot) in
             if let error = error {
-                print(error.localizedDescription)
+                log.error(error.localizedDescription)
             } else {
                 if var user = snapshot?.value as? [String:Any] {
                     // do something?

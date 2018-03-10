@@ -27,10 +27,10 @@ class GoogleCalendarRestAPIClient {
         let endpoint = "https://www.googleapis.com/calendar/v3/calendars/primary/events"
         let params: [String:Any] = ["orderBy": "startTime"]
         Alamofire.request(endpoint, method: .get, parameters: params, encoding: URLEncoding.default, headers: nil).responseJSON().done { response -> Void in
-            print("got a response: \(response)")
+            log.info("got a response: \(response)")
             let json = JSON(response)
             if let result = json.dictionaryObject {
-                print("result: \(result)")
+                log.info("result: \(result)")
             }
             GIDSignIn.sharedInstance().signOut()
         }

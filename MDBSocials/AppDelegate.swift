@@ -9,6 +9,9 @@
 import UIKit
 import Firebase
 import GoogleSignIn
+import SwiftyBeaver
+
+let log = SwiftyBeaver.self
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
@@ -23,6 +26,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
         GIDSignIn.sharedInstance().delegate = self
         
+        let console = ConsoleDestination()
+        console.format = "$DHH:mm:ss$d $N.$F:$l $C$c$L: $M"
+        log.addDestination(console)
+        log.info("Logging has started.")
+        
         return true
     }
     
@@ -33,7 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         if let error = error {
-            print(error.localizedDescription)
+            log.error(error.localizedDescription)
         } else {
             // Perform any operations on signed in user here.
 //            let guid = user.userID
@@ -41,7 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
 //            let gname = user.profile.name
 //            let gemail = user.profile.email
             GoogleCalendarRestAPIClient.getEvents()
-            print("signed in!")
+            log.info("Signed in through Google Authentification.")
         }
     }
     

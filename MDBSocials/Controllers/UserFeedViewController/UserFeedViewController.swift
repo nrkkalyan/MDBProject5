@@ -55,7 +55,6 @@ class UserFeedViewController: UIViewController {
                         update.image = image
                         self.tableView.reloadData()
                     }
-                    self.tableView.reloadData()
                 }
             } else if update.interested.contains(self.uid) {
                 self.posts.append(update)
@@ -65,7 +64,6 @@ class UserFeedViewController: UIViewController {
                     update.image = image
                         self.tableView.reloadData()
                 }
-                self.tableView.reloadData()
             }
             self.posts = Utils.sortPosts(posts: self.posts)
         })
@@ -77,7 +75,6 @@ class UserFeedViewController: UIViewController {
         let newPost = not.userInfo as! [String : Any]
         let json = JSON(newPost)
         if let result = json.dictionaryObject {
-            print(result)
             if let post = Post(JSON: result) {
                 if post.hostId == uid {
                     self.posts.append(post)
@@ -88,8 +85,6 @@ class UserFeedViewController: UIViewController {
                         self.posts = Utils.sortPosts(posts: self.posts)
                         self.tableView.reloadData()
                     }
-                    self.posts = Utils.sortPosts(posts: self.posts)
-                    self.tableView.reloadData()
                 }
             }
         }
@@ -174,9 +169,11 @@ extension UserFeedViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(String(indexPath.item) + " selected")
-        showPost = posts[indexPath.item]
-        performSegue(withIdentifier: "toEventDetails", sender: self)
+        log.info("Post " + String(indexPath.item) + " selected in feed")
+        if indexPath.item < posts.count {
+            showPost = posts[indexPath.item]
+            performSegue(withIdentifier: "toEventDetails", sender: self)
+        }
     }
     
 }

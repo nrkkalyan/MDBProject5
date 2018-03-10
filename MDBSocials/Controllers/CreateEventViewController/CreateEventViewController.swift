@@ -71,11 +71,10 @@ class CreateEventViewController: UIViewController {
         let time = Utils.createTimeString(date: datePicker.date)
         
         if name != "" && description != "" && location != "" {
-            print("creating new post")
+            log.info("Creating new post.")
             let dateTime = "\(date)\n\(time)"
-            print("\(name) \(description) \(dateTime) \(user) \(uid)")
             FirebaseDBClient.createNewPost(name: name, description: description, location: location, date: dateTime, imageData: imageData!, host: user.name!, hostId: uid)
-            print("new post created")
+            log.info("New post created.")
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "unhideNBar"), object: nil)
             dismiss(animated: true, completion: nil)
         }

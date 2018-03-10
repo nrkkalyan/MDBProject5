@@ -36,8 +36,6 @@ class MainFeedViewController: UIViewController {
                 self.posts = Utils.sortPosts(posts: self.posts)
                 self.tableView.reloadData()
             }
-            self.posts = Utils.sortPosts(posts: self.posts)
-            self.tableView.reloadData()
         })
         
 //        firstly {
@@ -53,7 +51,6 @@ class MainFeedViewController: UIViewController {
             if let postIndex = self.posts.index(where: { (post) in
                 return post.postId == update.postId
             }) {
-                print(postIndex)
                 self.posts[postIndex] = update
                 firstly {
                     return Utils.getImage(withUrl: self.posts[postIndex].imageUrl)
@@ -61,7 +58,6 @@ class MainFeedViewController: UIViewController {
                     self.posts[postIndex].image = image
                     self.tableView.reloadData()
                 }
-                self.tableView.reloadData()
             }
         })
     }
@@ -91,6 +87,7 @@ class MainFeedViewController: UIViewController {
     
     @objc func logoutButtonTapped() {
         UserAuthHelper.logOut(withBlock: { () in
+            log.info("Logging out.")
             self.navigationController?.popViewController(animated: true)
         })
     }
@@ -170,7 +167,7 @@ extension MainFeedViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(String(indexPath.item) + " selected")
+        log.info("Post " + String(indexPath.item) + " selected in feed")
         showPost = posts[indexPath.item]
         performSegue(withIdentifier: "toEventDetails", sender: self)
     }

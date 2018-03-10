@@ -80,6 +80,7 @@ PODS:
   - PromiseKit/UIKit (6.1.0):
     - PromiseKit/CorePromise
   - Spring (1.0.5)
+  - SwiftyBeaver (1.5.1)
   - SwiftyJSON (4.0.0)
 
 DEPENDENCIES:
@@ -95,6 +96,7 @@ DEPENDENCIES:
   - PromiseKit (~> 6.0)
   - PromiseKit/Alamofire
   - Spring (from `https://github.com/MengTo/Spring.git`)
+  - SwiftyBeaver
   - SwiftyJSON
 
 EXTERNAL SOURCES:
@@ -133,8 +135,9 @@ SPEC CHECKSUMS:
   p2.OAuth2: fdc2effef37793a8f775dd4760bc4c1ea906c956
   PromiseKit: cf84274e6d2bec1d42e21ade146645752b0b7bed
   Spring: 48aad470f3ead043b2da98b64e0bf0630b7ebc42
+  SwiftyBeaver: 4f74563624b2c1e821c522c54142b5dd5ebb0f30
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
 
-PODFILE CHECKSUM: 1978be2640b46c2e98065e9c437420e20cfaeb59
+PODFILE CHECKSUM: 61325a0023eb2c33a28ef8015311ba69bc0333d4
 
 COCOAPODS: 1.4.0

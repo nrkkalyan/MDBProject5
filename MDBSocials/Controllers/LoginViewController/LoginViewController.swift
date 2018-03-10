@@ -30,10 +30,22 @@ class LoginViewController: UIViewController {
         if Auth.auth().currentUser != nil {
             performSegue(withIdentifier: "toFeed", sender: self)
         }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(showAlert), name: NSNotification.Name(rawValue: "showAlert"), object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         navigationController?.isNavigationBarHidden = true
+    }
+    
+    @objc func showAlert(not: Notification) {
+        let content = not.userInfo as! [String:Any]
+        let title = content["title"] as! String
+        let message = content["message"] as! String
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
     }
     
     @objc func loginButtonTapped() {

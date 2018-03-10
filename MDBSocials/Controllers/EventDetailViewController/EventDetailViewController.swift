@@ -89,6 +89,8 @@ class EventDetailViewController: UIViewController, GIDSignInUIDelegate {
         return Promise { seal in
             let group = DispatchGroup()
             var users: [User] = []
+            
+            log.info("Fetching users from Firebase.")
             for uid in uids {
                 group.enter()
                 firstly {
@@ -104,6 +106,7 @@ class EventDetailViewController: UIViewController, GIDSignInUIDelegate {
                 }
             }
             group.notify(queue: DispatchQueue.main, execute: { () in
+                log.info("All users fetched from Firebase.")
                 seal.fulfill(users)
             })
         }
@@ -118,6 +121,8 @@ class EventDetailViewController: UIViewController, GIDSignInUIDelegate {
                 let placemark = placemarks?.first
                 coordinates = placemark?.location?.coordinate
                 withBlock(coordinates)
+            } else {
+                log.error(error?.localizedDescription)
             }
         }
     }
@@ -126,6 +131,7 @@ class EventDetailViewController: UIViewController, GIDSignInUIDelegate {
         getCoordinates() { coordinates in
             let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinates))
             mapItem.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving])
+            log.info("Apple Maps opened with directions to event.")
         }
     }
     
@@ -133,11 +139,13 @@ class EventDetailViewController: UIViewController, GIDSignInUIDelegate {
         
         // host has to be interested!
         if !uid.elementsEqual(post.hostId) {
-            FirebaseDBClient.updateInterestedCounter(uid: uid, pid: post.postId, withBlock: { (interested) in
+            firstly {
+                return FirebaseDBClient.updateInterestedCounter(uid: uid, pid: post.postId)
+            }.done { interested in
                 self.post.interested = interested
                 self.interestedButton.setTitle("Interested: \(self.post.interested.count)", for: .normal)
                 self.interestButtonChecked()
-            })
+            }
         }
     }
     

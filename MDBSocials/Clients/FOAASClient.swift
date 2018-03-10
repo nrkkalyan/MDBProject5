@@ -21,13 +21,13 @@ class FOAASClient {
             let endpoint = "https://www.foaas.com/\(input)/name"
             
             Alamofire.request(endpoint, method: .get, parameters: nil, encoding: URLEncoding.default, headers: ["Accept": "application/json"]).responseJSON().done { response -> Void in
-                print(response.json)
+                log.info(response.json)
                 let json = JSON(response.json)
                 if let result = json.dictionaryObject {
                     seal.fulfill(result["message"] as! String)
                 }
             }.catch { error in
-                print(error.localizedDescription)
+                log.error(error.localizedDescription)
                 seal.reject(error)
             }
         }

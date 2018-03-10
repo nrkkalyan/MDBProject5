@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PromiseKit
 
 class SignUpViewController: UIViewController {
 
@@ -31,10 +32,22 @@ class SignUpViewController: UIViewController {
         setupButtons()
         
         imagePicker.delegate = self
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(showAlert), name: NSNotification.Name(rawValue: "showAlert"), object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         navigationController?.isNavigationBarHidden = true
+    }
+    
+    @objc func showAlert(not: Notification) {
+        let content = not.userInfo as! [String:Any]
+        let title = content["title"] as! String
+        let message = content["message"] as! String
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
     }
     
     @objc func signupButtonTapped() {
@@ -42,20 +55,34 @@ class SignUpViewController: UIViewController {
         let email = emailTextField.text ?? ""
         let username = usernameTextField.text ?? ""
         let password = passwordTextField.text ?? ""
-        let imageData = UIImageJPEGRepresentation(profileImageView.image!, 0.5)
-        print("tapped")
-        if name != "" && email != "" && username != "" && password != "" {
-            print("passed")
-            UserAuthHelper.createUser(email: email, password: password, withBlock: { (uid) in
-                FirebaseDBClient.createNewUser(uid: uid, name: name, username: username, email: email, imageData: imageData!)
-                self.nameTextField.text = ""
-                self.emailTextField.text = ""
-                self.usernameTextField.text = ""
-                self.passwordTextField.text = ""
-                self.profileImageView.image = nil
-                self.profileImageButton.setTitle("Choose profile image", for: .normal)
-                self.performSegue(withIdentifier: "toFeed", sender: self)
-            })
+        if let image = profileImageView.image {
+            let imageData = UIImageJPEGRepresentation(image, 0.5)
+            if name != "" && email != "" && username != "" && password != "" {
+                firstly {
+                    return UserAuthHelper.createUser(email: email, password: password)
+                }.done { uid in
+                    FirebaseDBClient.createNewUser(uid: uid, name: name, username: username, email: email, imageData: imageData!)
+                    self.nameTextField.text = ""
+                    self.emailTextField.text = ""
+                    self.usernameTextField.text = ""
+                    self.passwordTextField.text = ""
+                    self.profileImageView.image = nil
+                    self.profileImageButton.setTitle("Choose profile image", for: .normal)
+                    self.performSegue(withIdentifier: "toFeed", sender: self)
+                }
+            } else {
+                log.warning("One of the textfields is empty.")
+                
+                let alert = UIAlertController(title: "Invalid Input", message: "Make sure to fill in all textfields!", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
+                present(alert, animated: true, completion: nil)
+            }
+        } else {
+            log.warning("User did not upload a profile picture.")
+            
+            let alert = UIAlertController(title: "Profile Picture", message: "Upload a profile picture!", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
+            present(alert, animated: true, completion: nil)
         }
     }
     
