@@ -35,6 +35,9 @@
 		19AE3867203BD8DF007E4DE0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 19AE3865203BD8DF007E4DE0 /* LaunchScreen.storyboard */; };
 		19AE3872203BD8DF007E4DE0 /* MDBSocialsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19AE3871203BD8DF007E4DE0 /* MDBSocialsTests.swift */; };
 		19AE387D203BD8DF007E4DE0 /* MDBSocialsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19AE387C203BD8DF007E4DE0 /* MDBSocialsUITests.swift */; };
+		19E41C3E2057390800191D0C /* RESTAPIClient-User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E41C3D2057390800191D0C /* RESTAPIClient-User.swift */; };
+		19E41C4020575B1000191D0C /* RESTAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E41C3F20575B1000191D0C /* RESTAPIClient.swift */; };
+		19E41C4220575B4F00191D0C /* RESTAPIClient-Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E41C4120575B4F00191D0C /* RESTAPIClient-Post.swift */; };
 		9252CFD7E8F1D226D5326682 /* Pods_MDBSocials.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 225BA15A877FABB463D17C6C /* Pods_MDBSocials.framework */; };
 /* End PBXBuildFile section */
 
@@ -90,6 +93,9 @@
 		19AE3878203BD8DF007E4DE0 /* MDBSocialsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MDBSocialsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		19AE387C203BD8DF007E4DE0 /* MDBSocialsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDBSocialsUITests.swift; sourceTree = "<group>"; };
 		19AE387E203BD8DF007E4DE0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		19E41C3D2057390800191D0C /* RESTAPIClient-User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RESTAPIClient-User.swift"; sourceTree = "<group>"; };
+		19E41C3F20575B1000191D0C /* RESTAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RESTAPIClient.swift; sourceTree = "<group>"; };
+		19E41C4120575B4F00191D0C /* RESTAPIClient-Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RESTAPIClient-Post.swift"; sourceTree = "<group>"; };
 		225BA15A877FABB463D17C6C /* Pods_MDBSocials.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MDBSocials.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		306CAD04C08A44DBF761E202 /* Pods-MDBSocials.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MDBSocials.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MDBSocials/Pods-MDBSocials.debug.xcconfig"; sourceTree = "<group>"; };
 		83649FD99F132E66B0FA8E81 /* Pods-MDBSocials.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MDBSocials.release.xcconfig"; path = "Pods/Target Support Files/Pods-MDBSocials/Pods-MDBSocials.release.xcconfig"; sourceTree = "<group>"; };
@@ -147,6 +153,9 @@
 				197B7EAC204688D500431541 /* FirebaseDBClient-Post.swift */,
 				197EE39D2048EC80008F314D /* GoogleCalendarRestAPIClient.swift */,
 				19397E4320495FA900F8ECFD /* FOAASClient.swift */,
+				19E41C3F20575B1000191D0C /* RESTAPIClient.swift */,
+				19E41C3D2057390800191D0C /* RESTAPIClient-User.swift */,
+				19E41C4120575B4F00191D0C /* RESTAPIClient-Post.swift */,
 			);
 			path = Clients;
 			sourceTree = "<group>";
@@ -564,14 +573,17 @@
 				19AE385F203BD8DF007E4DE0 /* LoginViewController.swift in Sources */,
 				199D4F37203ED19300FD0C68 /* Post.swift in Sources */,
 				192F33B7203BF94700528CE3 /* CreateEventViewController.swift in Sources */,
+				19E41C4020575B1000191D0C /* RESTAPIClient.swift in Sources */,
 				192F33BE203C3D8900528CE3 /* PostTableViewCell.swift in Sources */,
 				197B7EA920466F3600431541 /* Constants.swift in Sources */,
 				197B7EB02046B98000431541 /* UserFeedViewController.swift in Sources */,
+				19E41C4220575B4F00191D0C /* RESTAPIClient-Post.swift in Sources */,
 				19459F0A203D666E00F5A8AD /* FirebaseDBClient.swift in Sources */,
 				19AE385D203BD8DF007E4DE0 /* AppDelegate.swift in Sources */,
 				19397E4420495FA900F8ECFD /* FOAASClient.swift in Sources */,
 				1966B8ED2048120E00FFF998 /* InterestedTableViewCell.swift in Sources */,
 				197B7EAB2046889D00431541 /* FirebaseDBClient-User.swift in Sources */,
+				19E41C3E2057390800191D0C /* RESTAPIClient-User.swift in Sources */,
 				19459F0C203D6C1500F5A8AD /* User.swift in Sources */,
 				192F33B2203BF90600528CE3 /* MainFeedViewController.swift in Sources */,
 				199D4F35203EC94400FD0C68 /* Utils.swift in Sources */,

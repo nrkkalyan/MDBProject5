@@ -94,7 +94,7 @@ class EventDetailViewController: UIViewController, GIDSignInUIDelegate {
             for uid in uids {
                 group.enter()
                 firstly {
-                    return FirebaseDBClient.fetchUser(id: uid)
+                    return RESTAPIClient.fetchUser(id: uid)
                 }.done { user in
                     users.append(user)
                     firstly {

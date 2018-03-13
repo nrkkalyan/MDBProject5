@@ -56,6 +56,7 @@ extension FirebaseDBClient {
             ref.child("Users").child(id).observeSingleEvent(of: .value, with: { (snapshot) in
                 let json = JSON(snapshot.value)
                 if let result = json.dictionaryObject {
+                    log.info(result)
                     if let user = User(JSON: result) {
                         seal.fulfill(user)
                     }

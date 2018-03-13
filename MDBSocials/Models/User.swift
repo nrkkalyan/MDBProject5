@@ -58,7 +58,7 @@ class User: Mappable {
 //    }
     
     static func getCurrentUser(withId: String) -> Promise<User> {
-        return FirebaseDBClient.fetchUser(id: withId)
+        return RESTAPIClient.fetchUser(id: withId)
     }
     
 //    func getEventImage(withBlock: @escaping () -> ()) {

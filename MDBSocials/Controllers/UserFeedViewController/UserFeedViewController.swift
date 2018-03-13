@@ -33,6 +33,7 @@ class UserFeedViewController: UIViewController {
                 return User.getCurrentUser(withId: uid)
             }.done { user in
                 var events = [String]()
+                log.info(user.interested)
                 events.append(contentsOf: user.created ?? [])
                 events.append(contentsOf: user.interested ?? [])
                 self.fetchPosts(events: events)
@@ -103,10 +104,11 @@ class UserFeedViewController: UIViewController {
     
     func fetchPosts(events: [String]) {
         let group = DispatchGroup()
+        log.info(events.count)
         for event in events {
             group.enter()
             firstly {
-                return FirebaseDBClient.fetchPost(pid: event)
+                return RESTAPIClient.fetchPost(pid: event)
             }.done { post in
                 self.posts.append(post)
                 firstly {

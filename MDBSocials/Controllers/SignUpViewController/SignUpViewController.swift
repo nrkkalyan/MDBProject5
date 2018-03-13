@@ -61,7 +61,7 @@ class SignUpViewController: UIViewController {
                 firstly {
                     return UserAuthHelper.createUser(email: email, password: password)
                 }.done { uid in
-                    FirebaseDBClient.createNewUser(uid: uid, name: name, username: username, email: email, imageData: imageData!)
+                    RESTAPIClient.createNewUser(uid: uid, name: name, username: username, email: email, imageData: imageData!)
                     self.nameTextField.text = ""
                     self.emailTextField.text = ""
                     self.usernameTextField.text = ""

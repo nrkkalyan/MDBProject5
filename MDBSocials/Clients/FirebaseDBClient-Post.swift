@@ -96,7 +96,7 @@ extension FirebaseDBClient {
                 seal.reject(RequestTimedOutError.requestTimedOut)
             }
             let ref = Database.database().reference()
-            ref.child("Posts/\(pid)").observe(.value, with: { (snapshot) in
+            ref.child("Posts/\(pid)").observeSingleEvent(of: .value, with: { (snapshot) in
                 let json = JSON(snapshot.value)
                 if let result = json.dictionaryObject {
                     if let post = Post(JSON: result) {

@@ -7,12 +7,6 @@
 //
 
 import Foundation
-import FirebaseDatabase
-import FirebaseStorage
-import FirebaseAuth
-import UIKit
-import SwiftyJSON
-import PromiseKit
 
 public enum ResourceNotFoundError: Error {
     case resourceNotFound
