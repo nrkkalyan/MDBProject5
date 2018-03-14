@@ -140,7 +140,7 @@ class EventDetailViewController: UIViewController, GIDSignInUIDelegate {
         // host has to be interested!
         if !uid.elementsEqual(post.hostId) {
             firstly {
-                return FirebaseDBClient.updateInterestedCounter(uid: uid, pid: post.postId)
+                return RESTAPIClient.updateInterestedCounter(uid: uid, pid: post.postId)
             }.done { interested in
                 self.post.interested = interested
                 self.interestedButton.setTitle("Interested: \(self.post.interested.count)", for: .normal)

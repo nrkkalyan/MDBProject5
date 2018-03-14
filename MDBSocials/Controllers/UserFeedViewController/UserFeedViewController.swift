@@ -22,6 +22,7 @@ class UserFeedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        title = "User Feed"
 //        tabBarController?.viewControllers![1].title = "User Feed"
         setupTableView()
         

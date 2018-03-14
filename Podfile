@@ -8,6 +8,7 @@ target 'MDBSocials' do
   pod 'Firebase/Database'
   pod 'Firebase/Auth'
   pod 'Firebase/Storage'
+  pod 'Firebase/Messaging'
   pod 'ChameleonFramework'
   pod 'SwiftyJSON'
   pod "PromiseKit", "~> 6.0"

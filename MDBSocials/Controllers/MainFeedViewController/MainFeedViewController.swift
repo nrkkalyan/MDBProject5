@@ -27,16 +27,35 @@ class MainFeedViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(unhideNavigationBar), name: NSNotification.Name(rawValue: "unhideNBar"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(hideNavigationBar), name: NSNotification.Name(rawValue: "hideNBar"), object: nil)
         
-        FirebaseDBClient.fetchPosts(withBlock: { (post) in
-            self.posts.insert(post, at: 0)
-            firstly {
-                return Utils.getImage(withUrl: post.imageUrl)
-            }.done { image in
-                post.image = image
-                self.posts = Utils.sortPosts(posts: self.posts)
-                self.tableView.reloadData()
+//        FirebaseDBClient.fetchPosts(withBlock: { (post) in
+//            self.posts.insert(post, at: 0)
+//            firstly {
+//                return Utils.getImage(withUrl: post.imageUrl)
+//            }.done { image in
+//                post.image = image
+//                self.posts = Utils.sortPosts(posts: self.posts)
+//                self.tableView.reloadData()
+//            }
+//        })
+        
+        firstly {
+            return RESTAPIClient.fetchPosts()
+        }.done { posts in
+            let group = DispatchGroup()
+            for post in posts {
+                group.enter()
+                firstly {
+                    return Utils.getImage(withUrl: post.imageUrl)
+                }.done { image in
+                    post.image = image
+                    group.leave()
+                }
             }
-        })
+            group.notify(queue: .main, execute: {
+                self.posts = Utils.sortPosts(posts: posts)
+                self.tableView.reloadData()
+            })
+        }
         
 //        firstly {
 //            return FirebaseDBClient.fetchPosts()

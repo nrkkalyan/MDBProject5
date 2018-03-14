@@ -14,21 +14,21 @@ import FirebaseStorage
 
 extension FirebaseDBClient {
     
-    static func createNewUser(uid: String, name: String, username: String, email: String, imageData: Data) {
-        let storage = Storage.storage().reference().child("Profile Images/\(uid)")
-        let metadata = StorageMetadata()
-        metadata.contentType = "image/jpeg"
-        log.info("Starting profile image storage")
-        storage.putData(imageData, metadata: metadata).observe(.success) { (snapshot) in
-            log.info("Profile image stored.")
-            let url = snapshot.metadata?.downloadURL()?.absoluteString as! String
-            
-            let usersRef = Database.database().reference().child("Users")
-            let newUser = ["uid": uid, "username": username, "name": name, "email": email, "imageUrl": url]
-            let childUpdates = ["/\(uid)/": newUser]
-            usersRef.updateChildValues(childUpdates)
-        }
-    }
+//    static func createNewUser(uid: String, name: String, username: String, email: String, imageData: Data) {
+//        let storage = Storage.storage().reference().child("Profile Images/\(uid)")
+//        let metadata = StorageMetadata()
+//        metadata.contentType = "image/jpeg"
+//        log.info("Starting profile image storage")
+//        storage.putData(imageData, metadata: metadata).observe(.success) { (snapshot) in
+//            log.info("Profile image stored.")
+//            let url = snapshot.metadata?.downloadURL()?.absoluteString as! String
+//            
+//            let usersRef = Database.database().reference().child("Users")
+//            let newUser = ["uid": uid, "username": username, "name": name, "email": email, "imageUrl": url]
+//            let childUpdates = ["/\(uid)/": newUser]
+//            usersRef.updateChildValues(childUpdates)
+//        }
+//    }
     
     //    static func fetchUser(id: String, withBlock: @escaping (User) -> ()) {
     //        let ref = Database.database().reference()
@@ -47,23 +47,23 @@ extension FirebaseDBClient {
     //        })
     //    }
     
-    static func fetchUser(id: String) -> Promise<User> {
-        return Promise { seal in
-            after(seconds: 10).done {
-                seal.reject(RequestTimedOutError.requestTimedOut)
-            }
-            let ref = Database.database().reference()
-            ref.child("Users").child(id).observeSingleEvent(of: .value, with: { (snapshot) in
-                let json = JSON(snapshot.value)
-                if let result = json.dictionaryObject {
-                    log.info(result)
-                    if let user = User(JSON: result) {
-                        seal.fulfill(user)
-                    }
-                }
-            })
-        }
-    }
+//    static func fetchUser(id: String) -> Promise<User> {
+//        return Promise { seal in
+//            after(seconds: 10).done {
+//                seal.reject(RequestTimedOutError.requestTimedOut)
+//            }
+//            let ref = Database.database().reference()
+//            ref.child("Users").child(id).observeSingleEvent(of: .value, with: { (snapshot) in
+//                let json = JSON(snapshot.value)
+//                if let result = json.dictionaryObject {
+//                    log.info(result)
+//                    if let user = User(JSON: result) {
+//                        seal.fulfill(user)
+//                    }
+//                }
+//            })
+//        }
+//    }
     
     // if USEREVENT is true, add PID to CREATED
     // else add PID to INTERESTED
