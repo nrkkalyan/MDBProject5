@@ -68,7 +68,8 @@ class SignUpViewController: UIViewController {
                     self.passwordTextField.text = ""
                     self.profileImageView.image = nil
                     self.profileImageButton.setTitle("Choose profile image", for: .normal)
-                    self.performSegue(withIdentifier: "toFeed", sender: self)
+//                    self.performSegue(withIdentifier: "toFeed", sender: self)
+                    self.navigationController?.popViewController(animated: true)
                 }
             } else {
                 log.warning("One of the textfields is empty.")

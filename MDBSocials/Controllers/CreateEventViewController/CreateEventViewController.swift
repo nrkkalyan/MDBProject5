@@ -73,7 +73,7 @@ class CreateEventViewController: UIViewController {
         if name != "" && description != "" && location != "" {
             log.info("Creating new post.")
             let dateTime = "\(date)\n\(time)"
-            FirebaseDBClient.createNewPost(name: name, description: description, location: location, date: dateTime, imageData: imageData!, host: user.name!, hostId: uid)
+            RESTAPIClient.createNewPost(name: name, description: description, location: location, date: dateTime, imageData: imageData!, host: user.name!, hostId: uid)
             log.info("New post created.")
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "unhideNBar"), object: nil)
             dismiss(animated: true, completion: nil)

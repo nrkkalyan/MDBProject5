@@ -36,6 +36,10 @@ class LoginViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         navigationController?.isNavigationBarHidden = true
+        
+        if Auth.auth().currentUser != nil {
+            performSegue(withIdentifier: "toFeed", sender: self)
+        }
     }
     
     @objc func showAlert(not: Notification) {

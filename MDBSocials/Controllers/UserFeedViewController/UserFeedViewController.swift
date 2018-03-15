@@ -18,6 +18,7 @@ class UserFeedViewController: UIViewController {
     var posts: [Post] = []
     var showPost: Post!
     var uid: String!
+    var user: User!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +34,7 @@ class UserFeedViewController: UIViewController {
             firstly {
                 return User.getCurrentUser(withId: uid)
             }.done { user in
+                self.user = user
                 var events = [String]()
                 log.info(user.interested)
                 events.append(contentsOf: user.created ?? [])
@@ -47,9 +49,11 @@ class UserFeedViewController: UIViewController {
                 return post.postId == update.postId
             }) {
                 if !self.posts[postIndex].interested.contains(update.postId) {
+                    // if the update is in the user's feed but the user is no longer interested
                     self.posts.remove(at: postIndex)
                     self.tableView.reloadData()
                 } else {
+                    // if the update is in the user's feed and the user is still interested
                     self.posts[postIndex] = update
                     firstly {
                         return Utils.getImage(withUrl: update.imageUrl)
@@ -59,18 +63,19 @@ class UserFeedViewController: UIViewController {
                     }
                 }
             } else if update.interested.contains(self.uid) {
+                // if the update isn't in the user's feed and the user is shown as interested
                 self.posts.append(update)
                 firstly {
                     return Utils.getImage(withUrl: update.imageUrl)
                 }.done { image in
                     update.image = image
-                        self.tableView.reloadData()
+                    self.tableView.reloadData()
                 }
             }
             self.posts = Utils.sortPosts(posts: self.posts)
         })
         
-        NotificationCenter.default.addObserver(self, selector: #selector(addNewPost), name: NSNotification.Name(rawValue: "newPost"), object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(addNewPost), name: NSNotification.Name(rawValue: "newPost"), object: nil)
     }
     
     @objc func addNewPost(not: Notification) {
@@ -107,17 +112,24 @@ class UserFeedViewController: UIViewController {
         let group = DispatchGroup()
         log.info(events.count)
         for event in events {
+//            if !(self.user.created.contains(event) || self.user.interested.contains(event)) {
+//                continue
+//            }
             group.enter()
             firstly {
                 return RESTAPIClient.fetchPost(pid: event)
             }.done { post in
-                self.posts.append(post)
                 firstly {
                     return Utils.getImage(withUrl: post.imageUrl)
                 }.done { image in
+                    self.posts.append(post)
                     post.image = image
                     group.leave()
+                    self.tableView.reloadData()
+                    self.posts = Utils.sortPosts(posts: self.posts)
                 }
+            }.catch { error in
+                group.leave()
             }
         }
         group.notify(queue: DispatchQueue.main, execute: {

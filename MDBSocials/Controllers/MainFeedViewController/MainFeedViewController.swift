@@ -8,6 +8,7 @@
 
 import UIKit
 import PromiseKit
+import SwiftyJSON
 
 class MainFeedViewController: UIViewController {
 
@@ -79,10 +80,29 @@ class MainFeedViewController: UIViewController {
                 }
             }
         })
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(addNewPost), name: NSNotification.Name(rawValue: "newPost"), object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         setupNavigationBar()
+    }
+    
+    @objc func addNewPost(not: Notification) {
+        let newPost = not.userInfo as! [String : Any]
+        let json = JSON(newPost)
+        if let result = json.dictionaryObject {
+            if let post = Post(JSON: result) {
+                self.posts.append(post)
+                firstly {
+                    return Utils.getImage(withUrl: post.imageUrl)
+                    }.done { image in
+                        post.image = image
+                        self.posts = Utils.sortPosts(posts: self.posts)
+                        self.tableView.reloadData()
+                }
+            }
+        }
     }
     
     @objc func unhideNavigationBar() {
