@@ -21,7 +21,6 @@
 		1966B8EA20480EF600FFF998 /* InterestedDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1966B8E920480EF600FFF998 /* InterestedDetailView.swift */; };
 		1966B8ED2048120E00FFF998 /* InterestedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1966B8EC2048120E00FFF998 /* InterestedTableViewCell.swift */; };
 		197B7EA920466F3600431541 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197B7EA820466F3600431541 /* Constants.swift */; };
-		197B7EAB2046889D00431541 /* FirebaseDBClient-User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197B7EAA2046889D00431541 /* FirebaseDBClient-User.swift */; };
 		197B7EAD204688D500431541 /* FirebaseDBClient-Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197B7EAC204688D500431541 /* FirebaseDBClient-Post.swift */; };
 		197B7EB02046B98000431541 /* UserFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197B7EAF2046B98000431541 /* UserFeedViewController.swift */; };
 		197EE39E2048EC80008F314D /* GoogleCalendarRestAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197EE39D2048EC80008F314D /* GoogleCalendarRestAPIClient.swift */; };
@@ -73,7 +72,6 @@
 		1966B8E920480EF600FFF998 /* InterestedDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterestedDetailView.swift; sourceTree = "<group>"; };
 		1966B8EC2048120E00FFF998 /* InterestedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterestedTableViewCell.swift; sourceTree = "<group>"; };
 		197B7EA820466F3600431541 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		197B7EAA2046889D00431541 /* FirebaseDBClient-User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FirebaseDBClient-User.swift"; sourceTree = "<group>"; };
 		197B7EAC204688D500431541 /* FirebaseDBClient-Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FirebaseDBClient-Post.swift"; sourceTree = "<group>"; };
 		197B7EAF2046B98000431541 /* UserFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFeedViewController.swift; sourceTree = "<group>"; };
 		197EE39D2048EC80008F314D /* GoogleCalendarRestAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleCalendarRestAPIClient.swift; sourceTree = "<group>"; };
@@ -149,7 +147,6 @@
 			isa = PBXGroup;
 			children = (
 				19459F09203D666E00F5A8AD /* FirebaseDBClient.swift */,
-				197B7EAA2046889D00431541 /* FirebaseDBClient-User.swift */,
 				197B7EAC204688D500431541 /* FirebaseDBClient-Post.swift */,
 				197EE39D2048EC80008F314D /* GoogleCalendarRestAPIClient.swift */,
 				19397E4320495FA900F8ECFD /* FOAASClient.swift */,
@@ -584,7 +581,6 @@
 				19AE385D203BD8DF007E4DE0 /* AppDelegate.swift in Sources */,
 				19397E4420495FA900F8ECFD /* FOAASClient.swift in Sources */,
 				1966B8ED2048120E00FFF998 /* InterestedTableViewCell.swift in Sources */,
-				197B7EAB2046889D00431541 /* FirebaseDBClient-User.swift in Sources */,
 				19E41C3E2057390800191D0C /* RESTAPIClient-User.swift in Sources */,
 				19459F0C203D6C1500F5A8AD /* User.swift in Sources */,
 				192F33B2203BF90600528CE3 /* MainFeedViewController.swift in Sources */,

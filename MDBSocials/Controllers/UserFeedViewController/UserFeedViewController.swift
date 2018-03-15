@@ -112,9 +112,6 @@ class UserFeedViewController: UIViewController {
         let group = DispatchGroup()
         log.info(events.count)
         for event in events {
-//            if !(self.user.created.contains(event) || self.user.interested.contains(event)) {
-//                continue
-//            }
             group.enter()
             firstly {
                 return RESTAPIClient.fetchPost(pid: event)
